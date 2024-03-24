@@ -192,6 +192,7 @@ class EfficientSAMPrompt():
     ## Segment by point and bounding box prompts
     def segment_prompt(self, box, label, image_info=None, image_path=None):
         assert image_info is not None or image_path is not None , "Neither image_info or image_path should be None!"
+        
         if(image_path is not None):
             image_tensor, _ = self.image_process(image_path)
         else:
@@ -212,22 +213,6 @@ class EfficientSAMPrompt():
         )
         masked = torch.ge(predicted_logits[0, 0, 0, :, :], 0).cpu().detach().numpy()
         return masked.astype(np.uint8)
-
-if __name__ == "__main__":
-    gpu = "cuda:1"
-    model = get_efficient_sam_model(gpu=gpu)
-
-    # box_generate = EfficientSAMPrompt(gpu,model)
-    # input_point = np.array([[500,200], [750, 550]]) #,  [[x1, y1],[x2, y2]]
-    # input_label = np.array([[2,3]])
-    # mask = box_generate.segment_prompt(input_point,input_label,image_path="/opt/EfficientSAM/figs/examples/toilet4947.jpg")
-
-    everthing_generate = EfficientSAMEverthing(gpu=gpu, model=model)
-    masks = everthing_generate.segment_everthing(image_path="/opt/EfficientSAM/figs/examples/toilet4947.jpg")
-    # print(len(masks))
-    # for i,mask in enumerate(masks):
-    #     print(i,mask["area"])
-    #     cv2.imwrite(f"imgs/box{i}.png",np.uint8(mask["segmentation"]*255))
 
 
 
