@@ -1,4 +1,4 @@
-The release of EfficientSAM improved the speed of SAM, but there was no effective API to run everthing, point, and box modes.
+> The release of EfficientSAM improved the speed of SAM, but there was no effective API to run everthing, point, and box modes.
 
 According to the GitHub example of [EfficientSam](https://github.com/yformer/EfficientSAM) official, it is further packaged. The everthing pattern is further extended according to SAM.
 
