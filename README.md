@@ -2,7 +2,7 @@
 
 According to the GitHub example of [EfficientSam](https://github.com/yformer/EfficientSAM) official, it is further packaged. The everthing pattern is further extended according to SAM.
 
-# install
+# Install
 
 1. install SAM
 
@@ -30,9 +30,9 @@ According to the GitHub example of [EfficientSam](https://github.com/yformer/Eff
    cd EfficientSAM; pip install -e .
    ```
 
-# example
+# Example
 
-1. segment box mode
+## EfficientSam Box Mode
 
 ```python
 from eitsam_process.efficientsam_api import (
@@ -50,22 +50,34 @@ input_point = np.array([[500,200], [750, 550]]) #[[x1, y1],[x2, y2]]
 # input_label is used to indicate whether it is a point or a bounding box
 # [[0,0]] is a positive point, [[1.1]] is a negative point, [[2,3]] is box
 input_label = np.array([[2,3]])
-masks = box_generate.segment_prompt(input_point, input_label, image_path="img.jpg")   
+masks = box_generate.segment_prompt(input_point, input_label, image_path="img.jpg")  
+
 ```
 
-2. segment everthing mode
+## EfficientSam Everthing Mode
 
 ```python
 import cv2
 import numpy as np
 
-everthing_generate = EfficientSAMEverthing(gpu=DEVICE, model=model)
+everthing_generate = EfficientSAMEverthing(grid_size=16,gpu=DEVICE, model=model)
 masks = everthing_generate.segment_everthing(image_path="img.jpg")
 print(len(masks))
 for i,mask in enumerate(masks):
     if mask["area"] < 1000: continue
-    cv2.imwrite(f"imgs/img{i}.png", np.uint8(mask["segmentation"]*255))
+    cv2.imwrite(f"imgs/sub_img{i}.png", np.uint8(mask["segmentation"]*255))
+    
 ```
+
+The larger the `grid_size` setting, the more  memory is utilized. 
+
+In the preliminary test, when `grid_size=16`, it will occupy about 15GB of V100 memory.
+
+Configure `grid_size`  based on your memory conditions
+
+
+
+
 
 ## Citing
 
